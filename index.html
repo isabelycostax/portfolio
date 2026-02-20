@@ -1,338 +1,304 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Isabely Costa - Strategic Social Media & Operations Professional. Specialized in AI Education, Institutional Management and High-Impact Visual Design.">
-    <title>Isabely Costa | Strategic Design & Operations</title>
-    
+    <title>Isabely Costa | Estratégia & Design</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Inter:wght@300;400;600&family=Instrument+Serif:ital@0;1&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700;900&family=Plus+Jakarta+Sans:wght@300;400;700&display=swap');
 
         :root {
-            --navy-deep: #020617;
-            --navy-light: #1e293b;
-            --accent-blue: #3b82f6;
-            --white-pure: #ffffff;
-            --off-white: #f8fafc;
+            --brand-blue: #0047FF;
+            --deep-navy: #020617;
+            --white: #FFFFFF;
         }
 
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--navy-deep);
-            color: var(--white-pure);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--deep-navy);
+            color: var(--white);
             overflow-x: hidden;
-            scroll-behavior: smooth;
         }
 
-        .font-syne { font-family: 'Syne', sans-serif; }
-        .font-serif { font-family: 'Instrument Serif', serif; }
+        .font-huge { font-family: 'Unbounded', cursive; }
 
-        .grain-bg {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: url('https://grainy-gradients.vercel.app/noise.svg');
-            opacity: 0.04;
-            pointer-events: none;
-            z-index: 50;
+        .glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .text-reveal {
-            background: linear-gradient(to right, #ffffff 50%, #1e293b 50%);
-            background-size: 200% 100%;
-            background-position-x: 100%;
+        .text-outline {
+            -webkit-text-stroke: 1px rgba(255,255,255,0.3);
             color: transparent;
-            background-clip: text;
-            -webkit-background-clip: text;
         }
 
-        .timeline-line {
+        .video-container {
+            position: relative;
+            overflow: hidden;
+            border-radius: 24px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .experience-card::before {
+            content: '';
             position: absolute;
-            left: 20px;
+            left: 0;
             top: 0;
-            bottom: 0;
-            width: 1px;
-            background: rgba(255, 255, 255, 0.1);
+            width: 2px;
+            height: 0%;
+            background: var(--brand-blue);
+            transition: 0.5s;
         }
 
-        @media (min-width: 768px) {
-            .timeline-line { left: 50%; }
+        .experience-card:hover::before {
+            height: 100%;
         }
 
-        .timeline-dot {
-            position: absolute;
-            left: 16px;
-            width: 9px;
-            height: 9px;
-            background: var(--accent-blue);
-            border-radius: 50%;
-            box-shadow: 0 0 15px var(--accent-blue);
+        .custom-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
         }
 
-        @media (min-width: 768px) {
-            .timeline-dot { left: calc(50% - 4.5px); }
-        }
-
-        .glass-nav {
-            background: rgba(2, 6, 23, 0.8);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-        }
-
-        .bento-item {
-            background: rgba(255,255,255,0.02);
-            border: 1px solid rgba(255,255,255,0.05);
-            transition: all 0.3s ease;
-        }
-
-        .bento-item:hover {
-            background: rgba(255,255,255,0.05);
-            border-color: var(--accent-blue);
+        .section-title {
+            font-size: clamp(2rem, 8vw, 5rem);
+            line-height: 0.9;
         }
     </style>
 </head>
 <body>
-    <div class="grain-bg"></div>
 
-    <!-- SEO Header -->
-    <header>
-        <nav class="fixed w-full z-[100] glass-nav px-6 py-4">
-            <div class="container mx-auto flex justify-between items-center">
-                <a href="#" class="font-syne font-bold text-xl tracking-tighter">I.COSTA<span class="text-blue-500">.</span></a>
-                <div class="hidden md:flex space-x-10 text-[10px] font-syne uppercase tracking-widest">
-                    <a href="#about" class="hover:text-blue-500 transition">About</a>
-                    <a href="#experience" class="hover:text-blue-500 transition">Evolution</a>
-                    <a href="#work" class="hover:text-blue-500 transition">Visuals</a>
-                    <a href="#contact" class="px-4 py-2 bg-white text-black rounded-full hover:invert transition">Let's Talk</a>
-                </div>
+    <!-- Nav -->
+    <nav class="fixed w-full z-[100] p-6 mix-blend-difference">
+        <div class="flex justify-between items-center">
+            <span class="font-huge font-black text-xl tracking-tighter">IC*</span>
+            <div class="space-x-8 font-bold text-[10px] uppercase tracking-widest hidden md:flex">
+                <a href="#about" class="hover:text-blue-500 transition">História</a>
+                <a href="#work" class="hover:text-blue-500 transition">Portfólio</a>
+                <a href="#edutopia" class="hover:text-blue-500 transition">Edutopia.AI</a>
+                <a href="#contact" class="bg-white text-black px-4 py-2 rounded-full">Contato</a>
             </div>
-        </nav>
-    </header>
+        </div>
+    </nav>
 
-    <main>
-        <!-- Hero Section -->
-        <section id="hero" class="min-h-screen flex flex-col justify-center pt-20 px-6">
-            <div class="container mx-auto">
-                <div class="max-w-5xl">
-                    <h2 class="font-serif italic text-2xl md:text-4xl text-blue-400 mb-6" data-aos="fade-up">Strategic Multidisciplinary Professional</h2>
-                    <h1 class="font-syne text-5xl md:text-[8vw] leading-[0.9] font-extrabold uppercase mb-8" data-aos="fade-up" data-aos-delay="100">
-                        Bridging <br> <span class="text-blue-500 italic font-serif lowercase font-normal">the</span> Gap.
-                    </h1>
-                    <div class="grid md:grid-cols-2 gap-12 items-end">
-                        <p class="text-slate-400 text-lg md:text-xl leading-relaxed" data-aos="fade-up" data-aos-delay="200">
-                            Based in Brazil, I master the intersection of **Operational Excellence**, **AI-Driven Education**, and **High-Impact Visual Identity**. From managing state-level institutional projects to crafting premium social media strategies.
-                        </p>
-                        <div class="flex space-x-4" data-aos="fade-up" data-aos-delay="300">
-                            <div class="p-4 border border-white/10 rounded-xl bento-item">
-                                <span class="block text-2xl font-bold">4+</span>
-                                <span class="text-[10px] uppercase tracking-widest opacity-50">Years Exp.</span>
-                            </div>
-                            <div class="p-4 border border-white/10 rounded-xl bento-item">
-                                <span class="block text-2xl font-bold">Native</span>
-                                <span class="text-[10px] uppercase tracking-widest opacity-50">Portuguese</span>
-                            </div>
-                            <div class="p-4 border border-white/10 rounded-xl bento-item">
-                                <span class="block text-2xl font-bold">Fluent</span>
-                                <span class="text-[10px] uppercase tracking-widest opacity-50">English</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+    <!-- Hero -->
+    <section class="min-h-screen flex flex-col justify-center px-6 relative">
+        <div class="absolute top-20 right-10 text-right opacity-20 hidden lg:block">
+            <p class="font-huge text-6xl text-outline">STRATEGY</p>
+            <p class="font-huge text-6xl">CREATIVE</p>
+            <p class="font-huge text-6xl text-outline">OPERATIONS</p>
+        </div>
+
+        <div class="container mx-auto z-10">
+            <h1 class="section-title font-huge font-black mb-8">
+                ISABELY <br> <span class="text-blue-600">COSTA</span>
+            </h1>
+            <p class="max-w-xl text-lg md:text-2xl text-slate-400 mb-10 leading-tight">
+                Transformo rigidez administrativa em <span class="text-white font-bold">fluxo criativo</span>. De projetos estatais à revolução da IA na educação.
+            </p>
+            <div class="flex gap-4">
+                <a href="#work" class="px-8 py-4 bg-blue-600 font-bold rounded-full hover:bg-blue-700 transition shadow-[0_0_30px_rgba(0,71,255,0.4)]">Ver Portfólio</a>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Experience Timeline -->
-        <section id="experience" class="py-32 relative bg-slate-950/50">
-            <div class="container mx-auto px-6">
-                <div class="text-center mb-24">
-                    <h2 class="font-syne text-4xl md:text-6xl uppercase font-bold" data-aos="fade-up">Professional <br> Evolution</h2>
+    <!-- Experience Timeline -->
+    <section id="about" class="py-24 bg-white text-black">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-2 gap-20">
+                <div>
+                    <h2 class="font-huge text-5xl mb-12">ESTRATÉGIA <br> APLICADA</h2>
+                    <div class="space-y-12">
+                        <div class="experience-card relative pl-8 py-4" data-aos="fade-left">
+                            <span class="text-blue-600 font-bold text-xs uppercase tracking-widest">2023 | Fiocruz & Ceará</span>
+                            <h3 class="text-2xl font-black mb-2 uppercase">Coordenação Institucional</h3>
+                            <p class="text-slate-600 text-sm">Gestão de projetos estaduais de alto impacto. Excelência operacional reconhecida pelo Governo do Estado.</p>
+                        </div>
+                        <div class="experience-card relative pl-8 py-4" data-aos="fade-left" data-aos-delay="100">
+                            <span class="text-blue-600 font-bold text-xs uppercase tracking-widest">2024 | Style Company</span>
+                            <h3 class="text-2xl font-black mb-2 uppercase">Suporte Executivo</h3>
+                            <p class="text-slate-600 text-sm">Otimização de fluxos administrativos e suporte direto à gestão em ambiente corporativo dinâmico.</p>
+                        </div>
+                        <div class="experience-card relative pl-8 py-4" data-aos="fade-left" data-aos-delay="200">
+                            <span class="text-blue-600 font-bold text-xs uppercase tracking-widest">2025 | Waldorf Micael</span>
+                            <h3 class="text-2xl font-black mb-2 uppercase">Pedagogia & Gestão</h3>
+                            <p class="text-slate-600 text-sm">Docência com foco em organização sistêmica e engajamento acadêmico.</p>
+                        </div>
+                    </div>
                 </div>
-
-                <div class="relative max-w-5xl mx-auto">
-                    <div class="timeline-line"></div>
-
-                    <!-- Item 1: Edutopia -->
-                    <div class="relative mb-24 md:flex justify-between items-center w-full" data-aos="fade-up">
-                        <div class="timeline-dot mt-1"></div>
-                        <div class="hidden md:block w-[45%]"></div>
-                        <div class="md:w-[45%] pl-10 md:pl-0">
-                            <span class="text-blue-500 font-bold font-syne text-sm">2026 — PRESENT</span>
-                            <h3 class="text-2xl font-bold mt-2">Associate Founder</h3>
-                            <p class="text-slate-500 mb-4 tracking-wider uppercase text-xs">Edutopia.ai | Startup</p>
-                            <p class="text-sm text-slate-300 leading-relaxed">
-                                Leading the strategic vision and development of a pioneering startup positioned at the intersection of Artificial Intelligence and Education. Focusing on innovative AI-driven solutions to enhance pedagogical frameworks.
-                            </p>
-                        </div>
-                    </div>
-
-                    <!-- Item 2: Waldorf Micael -->
-                    <div class="relative mb-24 md:flex flex-row-reverse justify-between items-center w-full" data-aos="fade-up">
-                        <div class="timeline-dot mt-1"></div>
-                        <div class="hidden md:block w-[45%]"></div>
-                        <div class="md:w-[45%] pl-10 md:pl-0 text-left md:text-right">
-                            <span class="text-blue-500 font-bold font-syne text-sm">2025 — PRESENT</span>
-                            <h3 class="text-2xl font-bold mt-2">Professional Teacher</h3>
-                            <p class="text-slate-500 mb-4 tracking-wider uppercase text-xs">Waldorf Micael School</p>
-                            <p class="text-sm text-slate-300 leading-relaxed">
-                                Delivering structured educational programs while maintaining meticulous maintenance of academic documentation. Primary liaison between administration and families, fostering a collaborative learning environment.
-                            </p>
-                        </div>
-                    </div>
-
-                    <!-- Item 3: Fiocruz -->
-                    <div class="relative mb-24 md:flex justify-between items-center w-full" data-aos="fade-up">
-                        <div class="timeline-dot mt-1"></div>
-                        <div class="hidden md:block w-[45%]"></div>
-                        <div class="md:w-[45%] pl-10 md:pl-0">
-                            <span class="text-blue-500 font-bold font-syne text-sm">2023 — 2023</span>
-                            <h3 class="text-2xl font-bold mt-2">Project Coordinator</h3>
-                            <p class="text-slate-500 mb-4 tracking-wider uppercase text-xs">Fiocruz & Gov. Ceará</p>
-                            <p class="text-sm text-slate-300 leading-relaxed">
-                                Directed the execution of high-impact, state-level educational initiatives. Mastered stakeholder management and cross-departmental execution within the public and health sectors. Honored with a Certificate of Excellence.
-                            </p>
-                        </div>
-                    </div>
-
-                    <!-- Item 4: Style Company -->
-                    <div class="relative mb-24 md:flex flex-row-reverse justify-between items-center w-full" data-aos="fade-up">
-                        <div class="timeline-dot mt-1"></div>
-                        <div class="hidden md:block w-[45%]"></div>
-                        <div class="md:w-[45%] pl-10 md:pl-0 text-left md:text-right">
-                            <span class="text-blue-500 font-bold font-syne text-sm">2024 — 2024</span>
-                            <h3 class="text-2xl font-bold mt-2">Administrative Assistant</h3>
-                            <p class="text-slate-500 mb-4 tracking-wider uppercase text-xs">Style Company</p>
-                            <p class="text-sm text-slate-300 leading-relaxed">
-                                Provided comprehensive executive support and operational management within a fast-paced corporate environment. Streamlining leadership workflows and process optimization.
-                            </p>
+                <div class="flex items-center justify-center">
+                    <div class="relative w-full aspect-square glass bg-blue-600 rounded-[4rem] flex items-center justify-center overflow-hidden shadow-2xl">
+                        <div class="text-center p-12">
+                            <p class="font-huge text-6xl text-white">4+</p>
+                            <p class="font-bold uppercase tracking-widest text-white/70">Anos de <br> Experiência</p>
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Social Media Bento Portfolio -->
-        <section id="work" class="py-32 bg-white text-navy-deep">
-            <div class="container mx-auto px-6">
-                <div class="flex flex-col md:flex-row justify-between items-end mb-16">
-                    <div data-aos="fade-right">
-                        <h2 class="font-syne text-5xl font-extrabold uppercase mb-4">Strategic <br> Visuals</h2>
-                        <p class="font-serif italic text-2xl text-blue-600">Where data meets aesthetics.</p>
+    <!-- Visual Work -->
+    <section id="work" class="py-24">
+        <div class="container mx-auto px-6">
+            <h2 class="font-huge text-4xl md:text-6xl mb-16 text-center">IDENTIDADES <br> <span class="text-outline">MAGNÉTICAS</span></h2>
+            
+            <div class="grid md:grid-cols-2 gap-8 mb-24">
+                <div class="group relative" data-aos="zoom-in">
+                    <div class="video-container aspect-[4/5] md:aspect-video mb-6">
+                        <img src="assets/img-01.jpeg" alt="Dadinha Fashion Hair" class="w-full h-full object-cover transition duration-700 group-hover:scale-110">
                     </div>
-                    <div class="mt-8 md:mt-0 flex gap-4 uppercase text-[10px] font-bold tracking-widest" data-aos="fade-left">
-                        <span>Canva</span> • <span>Photoshop</span> • <span>Illustrator</span>
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <h3 class="font-huge text-xl">DADINHA HAIR</h3>
+                            <p class="text-slate-500 text-xs uppercase font-bold tracking-widest">Identidade Visual | Beauty</p>
+                        </div>
+                        <div class="w-10 h-10 border border-white/20 rounded-full flex items-center justify-center group-hover:bg-white group-hover:text-black transition">
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                    <div class="md:col-span-2 md:row-span-2 relative group overflow-hidden rounded-3xl" data-aos="zoom-in">
-                        <img src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?auto=format&fit=crop&q=80&w=800" alt="Social Media Mockup" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition duration-700">
-                        <div class="absolute inset-0 bg-navy-deep/60 opacity-0 group-hover:opacity-100 transition p-10 flex flex-col justify-end">
-                            <h4 class="text-white font-syne text-2xl font-bold">Corporate Branding</h4>
-                            <p class="text-white/70 text-sm">Strategic content system for Style Company.</p>
-                        </div>
+                <div class="group relative" data-aos="zoom-in" data-aos-delay="200">
+                    <div class="video-container aspect-[4/5] md:aspect-video mb-6">
+                        <img src="assets/img-02.jpeg" alt="Vanderson Nails" class="w-full h-full object-cover transition duration-700 group-hover:scale-110">
                     </div>
-                    <div class="md:col-span-1 md:row-span-1 relative group overflow-hidden rounded-3xl" data-aos="zoom-in" data-aos-delay="100">
-                        <img src="https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&q=80&w=800" alt="EdTech Mockup" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition duration-700">
-                        <div class="absolute inset-0 bg-navy-deep/60 opacity-0 group-hover:opacity-100 transition p-6">
-                            <h4 class="text-white font-syne text-xl font-bold">EdTech Design</h4>
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <h3 class="font-huge text-xl">VANDERSON NAILS</h3>
+                            <p class="text-slate-500 text-xs uppercase font-bold tracking-widest">Visual ID | Sobrancelhas</p>
                         </div>
-                    </div>
-                    <div class="md:col-span-1 md:row-span-2 relative group overflow-hidden rounded-3xl" data-aos="zoom-in" data-aos-delay="200">
-                        <img src="https://images.unsplash.com/photo-1611162616305-c69b3fa7fbe0?auto=format&fit=crop&q=80&w=800" alt="Instagram Grid" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition duration-700">
-                        <div class="absolute inset-0 bg-navy-deep/60 opacity-0 group-hover:opacity-100 transition p-6 flex flex-col justify-center text-center">
-                            <h4 class="text-white font-syne text-xl font-bold italic">Visual Curation</h4>
-                        </div>
-                    </div>
-                    <div class="md:col-span-1 md:row-span-1 relative group overflow-hidden rounded-3xl" data-aos="zoom-in" data-aos-delay="300">
-                        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=800" alt="Reports" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition duration-700">
-                        <div class="absolute inset-0 bg-navy-deep/60 opacity-0 group-hover:opacity-100 transition p-6">
-                            <h4 class="text-white font-syne text-xl font-bold">Metrics Dashboard</h4>
+                        <div class="w-10 h-10 border border-white/20 rounded-full flex items-center justify-center group-hover:bg-white group-hover:text-black transition">
+                            <i class="fas fa-arrow-right"></i>
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
 
-        <!-- Services -->
-        <section class="py-32 bg-navy-deep">
-            <div class="container mx-auto px-6">
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <div class="p-8 bento-item rounded-3xl" data-aos="fade-up">
-                        <i class="fas fa-briefcase text-blue-500 mb-4"></i>
-                        <h5 class="font-bold text-sm uppercase mb-2">Admin Support</h5>
-                        <p class="text-xs text-slate-400 leading-relaxed">Streamlining executive workflows and operational management.</p>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="video-container aspect-video" data-aos="fade-up">
+                    <video autoplay muted loop playsinline>
+                        <source src="assets/video-01.mp4" type="video/mp4">
+                    </video>
+                    <div class="absolute bottom-6 left-6">
+                        <h4 class="font-huge text-lg">STYLE FILMS</h4>
+                        <p class="text-xs font-bold uppercase tracking-widest opacity-70">Banners & Carrosséis</p>
                     </div>
-                    <div class="p-8 bento-item rounded-3xl" data-aos="fade-up" data-aos-delay="100">
-                        <i class="fas fa-chess text-blue-500 mb-4"></i>
-                        <h5 class="font-bold text-sm uppercase mb-2">Strategic Planning</h5>
-                        <p class="text-xs text-slate-400 leading-relaxed">Long-term roadmap design for brands and institutions.</p>
-                    </div>
-                    <div class="p-8 bento-item rounded-3xl" data-aos="fade-up" data-aos-delay="200">
-                        <i class="fas fa-bullhorn text-blue-500 mb-4"></i>
-                        <h5 class="font-bold text-sm uppercase mb-2">Digital Marketing</h5>
-                        <p class="text-xs text-slate-400 leading-relaxed">High-conversion content systems and social media presence.</p>
-                    </div>
-                    <div class="p-8 bento-item rounded-3xl" data-aos="fade-up" data-aos-delay="300">
-                        <i class="fas fa-microchip text-blue-500 mb-4"></i>
-                        <h5 class="font-bold text-sm uppercase mb-2">AI Education</h5>
-                        <p class="text-xs text-slate-400 leading-relaxed">Integrating artificial intelligence into pedagogical frameworks.</p>
+                </div>
+                <div class="video-container aspect-video" data-aos="fade-up" data-aos-delay="200">
+                    <video autoplay muted loop playsinline>
+                        <source src="assets/video-02.mp4" type="video/mp4">
+                    </video>
+                    <div class="absolute bottom-6 left-6">
+                        <h4 class="font-huge text-lg">FEED ANIMADO</h4>
+                        <p class="text-xs font-bold uppercase tracking-widest opacity-70">Motion Design Social</p>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Contact Section -->
-        <section id="contact" class="py-32 bg-white text-navy-deep overflow-hidden relative">
-            <div class="container mx-auto px-6 text-center relative z-10">
-                <h2 class="font-syne text-5xl md:text-[10vw] font-extrabold uppercase leading-none mb-12" data-aos="zoom-in">Let's <br> Connect</h2>
-                <div class="flex flex-col items-center gap-8">
-                    <a href="mailto:isabelly.costax@gmail.com" class="text-2xl md:text-5xl font-serif italic border-b-2 border-blue-500 pb-2 hover:text-blue-500 transition">isabelly.costax@gmail.com</a>
-                    <p class="font-bold uppercase tracking-[0.3em] text-[10px]">Fortaleza, CE • Available for Remote Work</p>
-                    <div class="flex gap-10 mt-6">
-                        <a href="tel:85986930127" class="hover:text-blue-500 transition text-2xl"><i class="fab fa-whatsapp"></i></a>
-                        <a href="#" class="hover:text-blue-500 transition text-2xl"><i class="fab fa-linkedin-in"></i></a>
-                        <a href="#" class="hover:text-blue-500 transition text-2xl"><i class="fab fa-instagram"></i></a>
+    <!-- Edutopia.AI Section -->
+    <section id="edutopia" class="py-24 bg-blue-600">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row items-center gap-12">
+                <div class="md:w-1/2">
+                    <h2 class="font-huge text-5xl mb-6">EDUTOPIA.AI</h2>
+                    <p class="text-xl mb-8 font-bold">O futuro da educação potencializado por Inteligência Artificial.</p>
+                    <p class="text-blue-100 leading-relaxed mb-8">
+                        Fundadora de uma iniciativa que une tecnologia de ponta e pedagogia. Criamos ferramentas que automatizam a burocracia do professor para focar no que importa: o aluno.
+                    </p>
+                    <div class="flex gap-4 flex-wrap">
+                        <span class="glass px-4 py-2 rounded-full text-xs font-bold uppercase tracking-widest">AI Promo</span>
+                        <span class="glass px-4 py-2 rounded-full text-xs font-bold uppercase tracking-widest">EdTech</span>
+                        <span class="glass px-4 py-2 rounded-full text-xs font-bold uppercase tracking-widest">Future Ready</span>
+                    </div>
+                </div>
+                <div class="md:w-1/2 grid grid-cols-2 gap-4">
+                    <div class="video-container aspect-[9/16] shadow-2xl">
+                        <video autoplay muted loop playsinline>
+                            <source src="assets/video-03.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="video-container aspect-square shadow-2xl">
+                            <video autoplay muted loop playsinline>
+                                <source src="assets/video-04.mp4" type="video/mp4">
+                            </video>
+                        </div>
+                        <div class="video-container aspect-square shadow-2xl">
+                            <video autoplay muted loop playsinline>
+                                <source src="assets/video-05.mp4" type="video/mp4">
+                            </video>
+                        </div>
                     </div>
                 </div>
             </div>
-            <!-- Decorative circle -->
-            <div class="absolute -bottom-24 -right-24 w-96 h-96 bg-blue-50 rounded-full blur-3xl opacity-50"></div>
-        </section>
-    </main>
+        </div>
+    </section>
 
-    <footer class="py-10 text-center border-t border-white/5 text-[8px] uppercase tracking-[0.5em] opacity-30">
-        © 2024 Isabely Costa — Strategic Excellence & Creative Direction
+    <!-- Contact -->
+    <section id="contact" class="py-32 relative overflow-hidden">
+        <div class="container mx-auto px-6 text-center relative z-10">
+            <h2 class="font-huge text-5xl md:text-8xl mb-12" data-aos="zoom-in">VAMOS <br> EVOLUIR?</h2>
+            <div class="space-y-6">
+                <a href="mailto:isabelly.costax@gmail.com" class="text-2xl md:text-4xl font-bold border-b-4 border-blue-600 pb-2 hover:text-blue-600 transition inline-block">isabelly.costax@gmail.com</a>
+                <div class="flex justify-center gap-10 mt-12">
+                    <a href="tel:85986930127" class="text-2xl hover:text-blue-600 transition"><i class="fab fa-whatsapp"></i></a>
+                    <a href="#" class="text-2xl hover:text-blue-600 transition"><i class="fab fa-linkedin"></i></a>
+                    <a href="#" class="text-2xl hover:text-blue-600 transition"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[150%] h-[150%] opacity-10 pointer-events-none">
+            <p class="font-huge text-[20vw] text-outline text-center rotate-12">CONNECT CONNECT CONNECT</p>
+        </div>
+    </section>
+
+    <footer class="py-12 border-t border-white/5 text-center">
+        <p class="text-[10px] font-bold uppercase tracking-[1em] opacity-30">Isabely Costa © 2026 — Estratégia, Design & IA</p>
     </footer>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
         AOS.init({ duration: 1000, once: false });
 
-        // Simple mouse tracking for subtle interactions
-        document.addEventListener('mousemove', (e) => {
-            const cursor = { x: e.clientX, y: e.clientY };
-            // Optional: add a small follower element if desired
-        });
-
-        // GSAP for smooth scroll effects on titles
+        // GSAP Parallax & Reveals
         gsap.registerPlugin(ScrollTrigger);
 
-        gsap.utils.toArray('h1, h2').forEach(heading => {
-            gsap.from(heading, {
+        gsap.to(".text-outline", {
+            scrollTrigger: {
+                trigger: "body",
+                start: "top top",
+                end: "bottom bottom",
+                scrub: 2
+            },
+            x: -200
+        });
+
+        // Smooth Scroll Reveal for section titles
+        gsap.utils.toArray('h2').forEach(title => {
+            gsap.from(title, {
                 scrollTrigger: {
-                    trigger: heading,
-                    start: "top bottom",
-                    toggleActions: "play none none reverse"
+                    trigger: title,
+                    start: "top 90%",
                 },
                 y: 50,
                 opacity: 0,
-                duration: 1
+                duration: 1,
+                ease: "power4.out"
             });
         });
     </script>

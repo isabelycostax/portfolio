@@ -1,233 +1,355 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Isabely Costa | Portfolio & Design</title>
+    <meta name="description" content="Isabely Costa - Creative Strategist & AI Specialist. Blending pedagogy, design, and artificial intelligence.">
+    <title>Isabely Costa | Creative Director & Strategist</title>
+    
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <!-- GSAP -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700;900&family=Plus+Jakarta+Sans:wght@300;400;700&display=swap');
 
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        background: 'var(--bg-color)',
+                        surface: 'var(--surface-color)',
+                        surfaceLight: 'var(--surface-light)',
+                        accent: '#2A5CFF',
+                        textMain: 'var(--text-main)',
+                        textDim: 'var(--text-dim)',
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        display: ['Syne', 'sans-serif'],
+                    },
+                    animation: {
+                        'spin-slow': 'spin 12s linear infinite',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
         :root {
-            --brand-blue: #0047FF;
-            --deep-navy: #020617;
-            --white: #FFFFFF;
+            --bg-color: #030303;
+            --surface-color: #0A0A0A;
+            --surface-light: #141414;
+            --text-main: #FFFFFF;
+            --text-dim: #888888;
+        }
+
+        .light-theme {
+            --bg-color: #F8F9FA;
+            --surface-color: #FFFFFF;
+            --surface-light: #E9ECEF;
+            --text-main: #111111;
+            --text-dim: #555555;
         }
 
         body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: var(--deep-navy);
-            color: var(--white);
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            transition: background-color 0.3s ease, color 0.3s ease;
             overflow-x: hidden;
         }
 
-        .font-huge { font-family: 'Unbounded', cursive; }
-
-        .glass {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(15px);
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: background 0.3s ease, border-color 0.3s ease;
         }
 
-        .text-outline {
-            -webkit-text-stroke: 1px rgba(255,255,255,0.3);
-            color: transparent;
+        .light-theme .glass-panel {
+            background: rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        
+        .project-card:hover .project-overlay {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .project-card img, .project-card video {
+            transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        
+        .project-card:hover img, .project-card:hover video {
+            transform: scale(1.05);
         }
 
-        /* Carousel Styles */
-        .carousel-track {
+        .marquee-track {
             display: flex;
             width: max-content;
-            animation: scroll 30s linear infinite;
+            animation: marquee 30s linear infinite;
         }
-
-        @keyframes scroll {
+        @keyframes marquee {
             0% { transform: translateX(0); }
             100% { transform: translateX(-50%); }
         }
 
-        .img-card {
-            width: 300px;
-            height: 400px;
-            margin: 0 10px;
-            border-radius: 20px;
-            overflow: hidden;
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .img-card img {
+        .circular-text {
+            position: absolute;
             width: 100%;
             height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s ease;
+            animation: spin 20s linear infinite;
+        }
+        @keyframes spin { 
+            100% { transform: rotate(360deg); } 
         }
 
-        .img-card:hover img {
-            transform: scale(1.1);
+        /* Stroke text utility for marquee */
+        .stroke-text {
+            -webkit-text-stroke: 1px var(--text-dim);
+            color: transparent;
+        }
+        .light-theme .stroke-text {
+            -webkit-text-stroke: 1px rgba(0,0,0,0.2);
         }
 
-        .video-container {
-            position: relative;
-            overflow: hidden;
-            border-radius: 24px;
-            background: #000;
+        /* Toggle Buttons */
+        .nav-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
         }
-
-        video {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
-        }
-
-        .profile-img {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            border: 3px solid var(--brand-blue);
-            object-fit: cover;
+        .nav-btn:hover {
+            background-color: rgba(125,125,125,0.1);
         }
     </style>
 </head>
-<body>
+<body class="antialiased selection:bg-accent selection:text-white">
 
-    <!-- Nav -->
-    <nav class="fixed w-full z-[100] p-6 mix-blend-difference">
-        <div class="flex justify-between items-center">
-            <span class="font-huge font-black text-xl tracking-tighter">IC*</span>
-            <div class="space-x-8 font-bold text-[10px] uppercase tracking-widest hidden md:flex text-white">
-                <a href="#portfolio" class="hover:text-blue-500 transition">Portfolio</a>
-                <a href="#edutopia" class="hover:text-blue-500 transition">IA & Edtech</a>
-                <a href="#about" class="hover:text-blue-500 transition">Sobre</a>
-                <a href="#contact" class="bg-white text-black px-4 py-2 rounded-full">Contato</a>
+    <!-- Fixed Navigation -->
+    <nav class="fixed top-6 left-0 right-0 z-50 px-6 pointer-events-none">
+        <div class="max-w-7xl mx-auto flex justify-between items-center pointer-events-auto">
+            <a href="#" class="font-display font-bold text-2xl tracking-tighter mix-blend-difference z-50">IC<span class="text-accent">.</span></a>
+            
+            <div class="flex items-center gap-3 glass-panel rounded-full p-1.5 z-50 bg-background/50">
+                
+                <!-- Desktop Links -->
+                <div class="hidden md:flex items-center border-r border-textDim/20 pr-3 mr-1">
+                    <a href="#work" class="px-4 py-2 rounded-full text-sm font-medium hover:text-accent transition-all" data-i18n="nav.projects">Projects</a>
+                    <a href="#expertise" class="px-4 py-2 rounded-full text-sm font-medium hover:text-accent transition-all" data-i18n="nav.services">Services</a>
+                    <a href="#about" class="px-4 py-2 rounded-full text-sm font-medium hover:text-accent transition-all" data-i18n="nav.about">About</a>
+                </div>
+
+                <!-- Theme Toggle -->
+                <button id="theme-toggle" class="nav-btn text-lg text-textMain" aria-label="Toggle Theme">
+                    <i class="ph ph-sun" id="theme-icon"></i>
+                </button>
+
+                <!-- Language Toggle -->
+                <button id="lang-toggle" class="nav-btn text-xs font-bold text-textMain border border-textDim/20 w-auto px-3" aria-label="Switch Language">
+                    EN
+                </button>
+
+                <a href="#contact" class="hidden md:block bg-textMain text-background px-5 py-2 rounded-full font-bold text-sm hover:bg-accent hover:text-white transition-all ml-2" data-i18n="nav.contact">
+                    Let's Talk
+                </a>
             </div>
         </div>
     </nav>
 
-    <!-- Hero -->
-    <section class="min-h-[80vh] flex flex-col justify-center px-6 relative">
-        <div class="container mx-auto z-10 text-center">
-            <h1 class="font-huge font-black text-5xl md:text-[7vw] leading-none mb-6" data-aos="fade-up">
-                ISABELY COSTA <br> <span class="text-blue-600">PORTFOLIO</span>
-            </h1>
-            <p class="max-w-2xl mx-auto text-lg text-slate-400 mb-10 leading-tight" data-aos="fade-up" data-aos-delay="200">
-                Design de alto impacto, edição de vídeo e inteligência artificial aplicados à construção de narrativas digitais.
-            </p>
-        </div>
-    </section>
+    <!-- Hero Section -->
+    <header class="relative min-h-[90vh] flex flex-col justify-center px-6 pt-20">
+        <!-- Abstract Background -->
+        <div class="absolute top-0 right-0 w-[40vw] h-[40vw] bg-accent/20 rounded-full blur-[150px] opacity-40 pointer-events-none transition-all duration-500"></div>
 
-    <!-- Portfolio Carousel -->
-    <section id="portfolio" class="py-10 overflow-hidden">
-        <h2 class="font-huge text-2xl text-center mb-10 opacity-50 uppercase tracking-widest">Visual Arts</h2>
-        <div class="carousel-track">
-            <!-- Items doubled for infinite effect -->
-            <div class="img-card group relative">
-                <img src="assets/img-01.jpeg" alt="Dadinha Fashion Hair">
-                <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition p-6 flex flex-col justify-end">
-                    <p class="font-bold text-xs uppercase">Dadinha Fashion Hair</p>
-                    <p class="text-[10px] opacity-70 italic">Identidade Visual & Social Media</p>
+        <div class="max-w-7xl mx-auto w-full z-10 grid md:grid-cols-12 gap-12 items-end">
+            <div class="md:col-span-8">
+                <div class="inline-flex items-center gap-2 border border-textDim/20 rounded-full px-4 py-1.5 mb-8 bg-surface/50 backdrop-blur-sm">
+                    <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                    <span class="text-xs font-mono uppercase tracking-widest text-textDim" data-i18n="hero.status">Available for new projects</span>
+                </div>
+                
+                <h1 class="font-display text-5xl md:text-8xl lg:text-9xl font-bold leading-[0.9] tracking-tighter mb-8">
+                    ATTENTION <br>
+                    <span class="text-textDim/40 italic font-light" data-i18n="hero.meets">ENGINEERING</span> <br>
+                    <span data-i18n="hero.intellect">& STRATEGY.</span>
+                </h1>
+                
+                <p class="text-lg md:text-xl text-textDim max-w-2xl leading-relaxed" data-i18n="hero.bio">
+                    Architecting digital narratives where <strong>Cognitive Science</strong> guides <strong>Generative AI</strong> for maximum retention and conversion.
+                </p>
+            </div>
+
+            <div class="md:col-span-4 flex flex-col items-start md:items-end justify-end pb-4">
+                <div class="relative w-32 h-32 md:w-40 md:h-40 flex items-center justify-center">
+                    <!-- Rotating Text Ring -->
+                    <svg class="circular-text w-full h-full" viewBox="0 0 100 100">
+                        <path id="circlePath" d="M 50, 50 m -37, 0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0" fill="transparent" />
+                        <text class="fill-textMain" font-size="11.5" font-family="monospace" letter-spacing="1.2">
+                            <textPath href="#circlePath">SCROLL DOWN • EXPLORE PORTFOLIO •</textPath>
+                        </text>
+                    </svg>
+                    <i class="ph ph-arrow-down text-2xl text-accent"></i>
                 </div>
             </div>
-            <div class="img-card group relative">
-                <img src="assets/img-02.jpeg" alt="Vanderson Nails">
-                <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition p-6 flex flex-col justify-end">
-                    <p class="font-bold text-xs uppercase">Vanderson Nails</p>
-                    <p class="text-[10px] opacity-70 italic">Visual Identity & Design</p>
+        </div>
+    </header>
+
+    <!-- Marquee -->
+    <div class="w-full overflow-hidden border-y border-textDim/10 bg-surfaceLight/30 py-6">
+        <div class="marquee-track flex gap-16 items-center">
+            <span class="text-4xl md:text-6xl font-display font-bold stroke-text opacity-40 uppercase">Strategy</span>
+            <span class="text-4xl md:text-6xl font-display font-bold text-textMain uppercase">Design</span>
+            <span class="text-4xl md:text-6xl font-display font-bold stroke-text opacity-40 uppercase">Artificial Intelligence</span>
+            <span class="text-4xl md:text-6xl font-display font-bold text-textMain uppercase">Motion</span>
+            <span class="text-4xl md:text-6xl font-display font-bold stroke-text opacity-40 uppercase">Pedagogy</span>
+            <!-- Repeat -->
+            <span class="text-4xl md:text-6xl font-display font-bold stroke-text opacity-40 uppercase">Strategy</span>
+            <span class="text-4xl md:text-6xl font-display font-bold text-textMain uppercase">Design</span>
+            <span class="text-4xl md:text-6xl font-display font-bold stroke-text opacity-40 uppercase">Artificial Intelligence</span>
+        </div>
+    </div>
+
+    <!-- Selected Work (Bento Grid) -->
+    <section id="work" class="py-32 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-16">
+                <h2 class="font-display text-5xl md:text-7xl font-bold uppercase">
+                    <span data-i18n="work.title1">Selected</span><br>
+                    <span data-i18n="work.title2">Work</span><span class="text-accent">.</span>
+                </h2>
+                <div class="text-right mt-6 md:mt-0">
+                    <p class="text-textDim text-sm mb-2" data-i18n="work.subtitle">Curated selection of commercial projects</p>
+                    <p class="text-xl font-mono">2024 — 2026</p>
                 </div>
             </div>
-            <!-- Videos in carousel as well -->
-            <div class="img-card">
-                <video autoplay muted loop playsinline class="w-full h-full object-cover">
-                    <source src="assets/video-01.mp4" type="video/mp4">
-                </video>
-            </div>
-            <div class="img-card">
-                <video autoplay muted loop playsinline class="w-full h-full object-cover">
-                    <source src="assets/video-02.mp4" type="video/mp4">
-                </video>
-            </div>
-            <!-- Duplicate for loop -->
-            <div class="img-card group relative">
-                <img src="assets/img-01.jpeg" alt="Dadinha Fashion Hair">
-            </div>
-            <div class="img-card group relative">
-                <img src="assets/img-02.jpeg" alt="Vanderson Nails">
-            </div>
-            <div class="img-card">
-                <video autoplay muted loop playsinline class="w-full h-full object-cover">
-                    <source src="assets/video-01.mp4" type="video/mp4">
-                </video>
-            </div>
-            <div class="img-card">
-                <video autoplay muted loop playsinline class="w-full h-full object-cover">
-                    <source src="assets/video-02.mp4" type="video/mp4">
-                </video>
-            </div>
-        </div>
-    </section>
 
-    <!-- Edutopia.AI Section -->
-    <section id="edutopia" class="py-24 bg-blue-600">
-        <div class="container mx-auto px-6">
-            <div class="text-center mb-16">
-                <h2 class="font-huge text-4xl md:text-6xl mb-4">EDUTOPIA.AI</h2>
-                <p class="text-blue-100 font-bold uppercase tracking-widest text-sm">IA + Pedagogia + Criatividade</p>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="video-container aspect-[9/16] max-h-[500px] mx-auto shadow-2xl overflow-hidden border border-white/20">
-                    <video autoplay muted loop playsinline>
+            <!-- Grid Layout -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-[400px]">
+                
+                <!-- Project 1: Edutopia (Large) -->
+                <div class="project-card group relative lg:col-span-2 row-span-1 md:row-span-2 rounded-3xl overflow-hidden bg-surfaceLight border border-textDim/10 cursor-pointer">
+                    <video autoplay muted loop playsinline class="w-full h-full object-cover opacity-80 group-hover:opacity-100">
                         <source src="assets/video-03.mp4" type="video/mp4">
                     </video>
+                    <div class="project-overlay absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent p-8 flex flex-col justify-end opacity-0 transition-all duration-500 translate-y-4">
+                        <div class="flex gap-2 mb-3">
+                            <span class="px-3 py-1 bg-accent text-white text-xs font-bold rounded-full uppercase">EdTech</span>
+                            <span class="px-3 py-1 bg-white/10 text-white text-xs font-bold rounded-full uppercase">AI Video</span>
+                        </div>
+                        <h3 class="font-display text-3xl font-bold text-white">Edutopia.AI</h3>
+                        <p class="text-white/80 text-sm mt-2 max-w-md" data-i18n="project.edutopia.desc">Revolutionizing learning retention through AI-generated micro-content. Achieved 45% higher engagement rates.</p>
+                    </div>
                 </div>
-                <div class="video-container aspect-[9/16] max-h-[500px] mx-auto shadow-2xl overflow-hidden border border-white/20">
-                    <video autoplay muted loop playsinline>
-                        <source src="assets/video-04.mp4" type="video/mp4">
+
+                <!-- Project 2: Dadinha -->
+                <div class="project-card group relative rounded-3xl overflow-hidden bg-surfaceLight border border-textDim/10 cursor-pointer">
+                    <img src="assets/img-01.jpeg" alt="Dadinha Fashion" class="w-full h-full object-cover opacity-80 group-hover:opacity-100">
+                    <div class="project-overlay absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent p-8 flex flex-col justify-end opacity-0 transition-all duration-500 translate-y-4">
+                        <div class="flex gap-2 mb-3">
+                            <span class="px-3 py-1 bg-white text-black text-xs font-bold rounded-full uppercase">Branding</span>
+                        </div>
+                        <h3 class="font-display text-2xl font-bold text-white">Dadinha Fashion</h3>
+                    </div>
+                </div>
+
+                <!-- Project 3: Motion/Reels -->
+                <div class="project-card group relative rounded-3xl overflow-hidden bg-surfaceLight border border-textDim/10 cursor-pointer">
+                    <video autoplay muted loop playsinline class="w-full h-full object-cover opacity-80 group-hover:opacity-100">
+                        <source src="assets/video-01.mp4" type="video/mp4">
                     </video>
+                    <div class="project-overlay absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent p-8 flex flex-col justify-end opacity-0 transition-all duration-500 translate-y-4">
+                        <div class="flex gap-2 mb-3">
+                            <span class="px-3 py-1 bg-accent text-white text-xs font-bold rounded-full uppercase">Social</span>
+                        </div>
+                        <h3 class="font-display text-2xl font-bold text-white">Viral Reels</h3>
+                    </div>
                 </div>
-                <div class="video-container aspect-[9/16] max-h-[500px] mx-auto shadow-2xl overflow-hidden border border-white/20">
-                    <video autoplay muted loop playsinline>
+
+                <!-- Project 4: Vanderson Nails -->
+                <div class="project-card group relative rounded-3xl overflow-hidden bg-surfaceLight border border-textDim/10 cursor-pointer">
+                    <img src="assets/img-02.jpeg" alt="Vanderson Nails" class="w-full h-full object-cover opacity-80 group-hover:opacity-100">
+                    <div class="project-overlay absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent p-8 flex flex-col justify-end opacity-0 transition-all duration-500 translate-y-4">
+                        <div class="flex gap-2 mb-3">
+                            <span class="px-3 py-1 bg-white text-black text-xs font-bold rounded-full uppercase">Identity</span>
+                        </div>
+                        <h3 class="font-display text-2xl font-bold text-white">Vanderson Nails</h3>
+                    </div>
+                </div>
+
+                <!-- Project 5: AI Motion -->
+                <div class="project-card group relative lg:col-span-2 rounded-3xl overflow-hidden bg-surfaceLight border border-textDim/10 cursor-pointer">
+                    <video autoplay muted loop playsinline class="w-full h-full object-cover opacity-80 group-hover:opacity-100">
                         <source src="assets/video-05.mp4" type="video/mp4">
                     </video>
+                    <div class="project-overlay absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent p-8 flex flex-col justify-end opacity-0 transition-all duration-500 translate-y-4">
+                        <div class="flex gap-2 mb-3">
+                            <span class="px-3 py-1 bg-accent text-white text-xs font-bold rounded-full uppercase">Generative AI</span>
+                            <span class="px-3 py-1 bg-white/10 text-white text-xs font-bold rounded-full uppercase">Concept</span>
+                        </div>
+                        <h3 class="font-display text-3xl font-bold text-white">Future of Education</h3>
+                        <p class="text-white/80 text-sm mt-2 max-w-md" data-i18n="project.future.desc">Conceptual exploration of AI interfaces in classroom settings.</p>
+                    </div>
                 </div>
-            </div>
-            <div class="mt-16 max-w-2xl mx-auto text-center">
-                <p class="text-blue-50 text-lg italic">"Utilizando o poder da inteligência artificial para otimizar processos educacionais e criar conteúdos de retenção rápida."</p>
             </div>
         </div>
     </section>
 
-    <!-- About Section (History) -->
-    <section id="about" class="py-24 bg-white text-black">
-        <div class="container mx-auto px-6">
-            <div class="flex flex-col md:flex-row items-center gap-12">
-                <div class="md:w-1/3 flex justify-center" data-aos="fade-right">
-                    <div class="relative">
-                        <img src="assets/img-isabely.jpg" alt="Isabely Costa" class="profile-img shadow-xl">
-                        <div class="absolute -bottom-2 -right-2 bg-blue-600 w-8 h-8 rounded-full flex items-center justify-center text-white text-xs">
-                            <i class="fas fa-check"></i>
-                        </div>
-                    </div>
-                </div>
-                <div class="md:w-2/3" data-aos="fade-left">
-                    <h2 class="font-huge text-4xl mb-6 uppercase">Sobre Mim</h2>
-                    <p class="text-xl font-bold text-blue-600 mb-4">Graduanda em Pedagogia pela Universidade Estadual do Ceará (UECE).</p>
-                    <p class="text-slate-600 leading-relaxed mb-6">
-                        Entusiasta de design gráfico e arte digital, transformo conceitos em realidades visuais impactantes. Possuo vasta vivência com edição avançada de imagens e vídeos, além de dominar ferramentas de <strong>Inteligência Artificial</strong> para organização estratégica e criação de conteúdo de alto nível.
+    <!-- Services / Methodology -->
+    <section id="expertise" class="py-24 border-t border-textDim/10">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid md:grid-cols-2 gap-16">
+                <div>
+                    <h2 class="font-display text-4xl md:text-5xl font-bold mb-8" data-i18n="method.title">My Methodology</h2>
+                    <p class="text-lg text-textDim leading-relaxed mb-8" data-i18n="method.desc">
+                        Design is not ornamental; it is functional. I apply Educational Psychology principles to reduce cognitive load, ensuring messages are not just seen, but processed and retained.
                     </p>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div class="p-4 bg-slate-50 rounded-xl border border-slate-100">
-                            <h4 class="font-huge text-[10px] text-blue-600 uppercase">Expertise</h4>
-                            <p class="text-xs font-bold">Design Ops & IA</p>
+                    <a href="#contact" class="text-accent font-bold border-b border-accent pb-1 inline-flex items-center gap-2">
+                        <span data-i18n="cta.start">Start a Project</span> <i class="ph ph-arrow-right"></i>
+                    </a>
+                </div>
+                <div class="space-y-8">
+                    <div class="flex gap-6 group">
+                        <div class="w-12 h-12 rounded-full border border-textDim/20 flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-white transition-all shrink-0">
+                            <i class="ph ph-brain text-2xl"></i>
                         </div>
-                        <div class="p-4 bg-slate-50 rounded-xl border border-slate-100">
-                            <h4 class="font-huge text-[10px] text-blue-600 uppercase">Foco</h4>
-                            <p class="text-xs font-bold">Content Growth</p>
+                        <div>
+                            <h3 class="font-display text-xl font-bold mb-2" data-i18n="service.cognitive">Cognitive Design</h3>
+                            <p class="text-textDim text-sm" data-i18n="service.cognitive.desc">Designing layouts and flows that reduce cognitive load and guide user attention naturally.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-6 group">
+                        <div class="w-12 h-12 rounded-full border border-textDim/20 flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-white transition-all shrink-0">
+                            <i class="ph ph-robot text-2xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-display text-xl font-bold mb-2" data-i18n="service.ai">AI-Driven Content</h3>
+                            <p class="text-textDim text-sm" data-i18n="service.ai.desc">Using Midjourney, Stable Diffusion, and LLMs to scale asset production while maintaining brand voice.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-6 group">
+                        <div class="w-12 h-12 rounded-full border border-textDim/20 flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-white transition-all shrink-0">
+                            <i class="ph ph-chart-line-up text-2xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-display text-xl font-bold mb-2" data-i18n="service.growth">Growth Strategy</h3>
+                            <p class="text-textDim text-sm" data-i18n="service.growth.desc">Video editing and social strategy focused on retention metrics and algorithmic performance.</p>
                         </div>
                     </div>
                 </div>
@@ -235,37 +357,212 @@
         </div>
     </section>
 
-    <!-- Contact -->
-    <section id="contact" class="py-32 bg-deep-navy text-white text-center">
-        <h2 class="font-huge text-4xl md:text-7xl mb-12" data-aos="zoom-in">VAMOS <br> CRIAR?</h2>
-        <a href="mailto:isabelly.costax@gmail.com" class="text-xl md:text-3xl font-bold border-b-2 border-blue-600 pb-2 hover:text-blue-600 transition inline-block mb-12">isabelly.costax@gmail.com</a>
-        <div class="flex justify-center gap-8">
-            <a href="tel:85986930127" class="text-2xl hover:text-blue-600 transition"><i class="fab fa-whatsapp"></i></a>
-            <a href="#" class="text-2xl hover:text-blue-600 transition"><i class="fab fa-linkedin"></i></a>
-            <a href="#" class="text-2xl hover:text-blue-600 transition"><i class="fab fa-instagram"></i></a>
+    <!-- About Section -->
+    <section id="about" class="py-32 px-6 bg-surfaceLight/20 relative overflow-hidden">
+        <div class="max-w-6xl mx-auto relative z-10 flex flex-col md:flex-row items-center gap-16">
+            
+            <!-- Profile Image Fixed -->
+            <div class="w-full md:w-1/2 flex justify-center">
+                <div class="relative w-80 h-80 md:w-96 md:h-96">
+                    <!-- Rotating Ring -->
+                    <div class="absolute inset-0 border border-dashed border-textDim/20 rounded-full animate-spin-slow"></div>
+                    <!-- Glow -->
+                    <div class="absolute inset-4 bg-accent/20 rounded-full blur-3xl"></div>
+                    <!-- Image Container: ensuring pure circle and clip -->
+                    <div class="absolute inset-4 rounded-full overflow-hidden border-4 border-surface shadow-2xl">
+                        <img src="assets/img-isabely.jpg" alt="Isabely Costa" class="w-full h-full object-cover hover:scale-110 transition-transform duration-700">
+                    </div>
+                    <!-- Badge -->
+                    <div class="absolute bottom-10 -right-4 bg-accent text-white px-4 py-2 rounded-lg font-bold text-sm shadow-xl rotate-3">
+                        Creative Strategist
+                    </div>
+                </div>
+            </div>
+
+            <div class="w-full md:w-1/2">
+                <span class="text-accent font-mono uppercase tracking-widest text-sm mb-4 block" data-i18n="about.label">About Me</span>
+                <h2 class="font-display text-4xl md:text-5xl font-bold mb-6" data-i18n="about.title">From Classroom <br> to Algorithm.</h2>
+                <p class="text-textDim text-lg leading-relaxed mb-6" data-i18n="about.p1">
+                    My background in <strong>Pedagogy (UECE)</strong> is not a detour; it is the foundation of my strategy. 
+                </p>
+                <p class="text-textDim text-lg leading-relaxed mb-8" data-i18n="about.p2">
+                    Marketing is, essentially, high-speed education. I transpose <strong>andragogy and learning retention techniques</strong> to create digital assets that convert passive viewers into active users.
+                </p>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="p-4 bg-surface border border-textDim/10 rounded-xl">
+                        <span class="block text-2xl font-display font-bold text-textMain mb-1">3+ Years</span>
+                        <span class="text-xs text-textDim uppercase" data-i18n="stats.exp">In Design & Video</span>
+                    </div>
+                    <div class="p-4 bg-surface border border-textDim/10 rounded-xl">
+                        <span class="block text-2xl font-display font-bold text-textMain mb-1">Top 10%</span>
+                        <span class="text-xs text-textDim uppercase" data-i18n="stats.prompt">AI Prompt Engineering</span>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
-    <footer class="py-12 border-t border-white/5 text-center opacity-30">
-        <p class="text-[8px] font-bold uppercase tracking-[1em]">Isabely Costa © 2026 — Visual Designer & AI Enthusiast</p>
+    <!-- Footer / Contact -->
+    <footer id="contact" class="py-32 px-6 border-t border-textDim/10 text-center relative overflow-hidden">
+        <div class="absolute inset-0 bg-accent/5 radial-gradient"></div>
+        
+        <div class="max-w-4xl mx-auto relative z-10">
+            <h2 class="font-display text-5xl md:text-8xl font-bold mb-12 tracking-tighter">
+                <span data-i18n="footer.ready">READY TO</span> <br>
+                <span class="text-transparent stroke-text" style="-webkit-text-stroke: 1px var(--text-textMain);">COLLABORATE?</span>
+            </h2>
+            
+            <a href="mailto:isabelly.costax@gmail.com" class="inline-block text-2xl md:text-3xl font-mono text-textMain border border-textDim/20 rounded-full px-8 py-4 hover:bg-textMain hover:text-background transition-all mb-12">
+                isabelly.costax@gmail.com
+            </a>
+
+            <div class="flex justify-center gap-8 mb-16">
+                <a href="#" class="text-textDim hover:text-accent transition-colors text-xl"><i class="ph ph-linkedin-logo"></i> LinkedIn</a>
+                <a href="#" class="text-textDim hover:text-accent transition-colors text-xl"><i class="ph ph-instagram-logo"></i> Instagram</a>
+                <a href="https://wa.me/5585986930127" class="text-textDim hover:text-accent transition-colors text-xl"><i class="ph ph-whatsapp-logo"></i> WhatsApp</a>
+            </div>
+
+            <p class="text-xs text-textDim uppercase tracking-[0.2em]">
+                &copy; 2026 Isabely Costa Portfolio. <br> Crafted with Intelligence.
+            </p>
+        </div>
     </footer>
 
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        AOS.init({ duration: 1000, once: false });
+        // --- TRANSLATIONS CONFIGURATION ---
+        const translations = {
+            en: {
+                "nav.projects": "Projects",
+                "nav.services": "Services",
+                "nav.about": "About",
+                "nav.contact": "Let's Talk",
+                "hero.status": "Available for new projects",
+                "hero.meets": "ENGINEERING",
+                "hero.intellect": "& STRATEGY.",
+                "hero.bio": "Architecting digital narratives where <strong>Cognitive Science</strong> guides <strong>Generative AI</strong> for maximum retention and conversion.",
+                "work.title1": "Selected",
+                "work.title2": "Work",
+                "work.subtitle": "Curated selection of commercial projects",
+                "project.edutopia.desc": "Revolutionizing learning retention through AI-generated micro-content. Achieved 45% higher engagement rates.",
+                "project.future.desc": "Conceptual exploration of AI interfaces in classroom settings.",
+                "method.title": "My Methodology",
+                "method.desc": "Design is not ornamental; it is functional. I apply Educational Psychology principles to reduce cognitive load, ensuring messages are not just seen, but processed and retained.",
+                "cta.start": "Start a Project",
+                "service.cognitive": "Cognitive Design",
+                "service.cognitive.desc": "Designing layouts and flows that reduce cognitive load and guide user attention naturally.",
+                "service.ai": "AI-Driven Content",
+                "service.ai.desc": "Using Midjourney, Stable Diffusion, and LLMs to scale asset production while maintaining brand voice.",
+                "service.growth": "Growth Strategy",
+                "service.growth.desc": "Video editing and social strategy focused on retention metrics and algorithmic performance.",
+                "about.label": "About Me",
+                "about.title": "From Classroom <br> to Algorithm.",
+                "about.p1": "My background in <strong>Pedagogy (UECE)</strong> is not a detour; it is the foundation of my strategy.",
+                "about.p2": "Marketing is, essentially, high-speed education. I transpose <strong>andragogy and learning retention techniques</strong> to create digital assets that convert passive viewers into active users.",
+                "stats.exp": "In Design & Video",
+                "stats.prompt": "AI Prompt Engineering",
+                "footer.ready": "READY TO"
+            },
+            pt: {
+                "nav.projects": "Projetos",
+                "nav.services": "Serviços",
+                "nav.about": "Sobre",
+                "nav.contact": "Vamos Conversar",
+                "hero.status": "Disponível para projetos",
+                "hero.meets": "ENGENHARIA",
+                "hero.intellect": "& ESTRATÉGIA.",
+                "hero.bio": "Arquitetando narrativas digitais onde a <strong>Ciência Cognitiva</strong> guia a <strong>IA Generativa</strong> para máxima retenção e conversão.",
+                "work.title1": "Trabalhos",
+                "work.title2": "Selecionados",
+                "work.subtitle": "Seleção curada de projetos comerciais",
+                "project.edutopia.desc": "Revolucionando a retenção de aprendizado através de micro-conteúdos gerados por IA. Alcançou taxas de engajamento 45% maiores.",
+                "project.future.desc": "Exploração conceitual de interfaces de IA em ambientes de sala de aula.",
+                "method.title": "Minha Metodologia",
+                "method.desc": "O design não é ornamental; é funcional. Aplico princípios de Psicologia Educacional para reduzir a carga cognitiva, garantindo que a mensagem não seja apenas vista, mas processada e retida.",
+                "cta.start": "Iniciar Projeto",
+                "service.cognitive": "Design Cognitivo",
+                "service.cognitive.desc": "Projetando layouts e fluxos que reduzem a carga cognitiva e guiam a atenção do usuário naturalmente.",
+                "service.ai": "Conteúdo via IA",
+                "service.ai.desc": "Usando Midjourney, Stable Diffusion e LLMs para escalar a produção de assets mantendo a voz da marca.",
+                "service.growth": "Estratégia de Growth",
+                "service.growth.desc": "Edição de vídeo e estratégia social focadas em métricas de retenção e performance algorítmica.",
+                "about.label": "Sobre Mim",
+                "about.title": "Da Sala de Aula <br> ao Algoritmo.",
+                "about.p1": "Minha formação em <strong>Pedagogia (UECE)</strong> não é um desvio; é o alicerce da minha estratégia.",
+                "about.p2": "Marketing é, em essência, ensino em alta velocidade. Transponho <strong>técnicas de andragogia e retenção</strong> para criar ativos digitais que convertem espectadores passivos em usuários ativos.",
+                "stats.exp": "Em Design e Vídeo",
+                "stats.prompt": "Engenharia de Prompt IA",
+                "footer.ready": "PRONTO PARA"
+            }
+        };
+
+        // --- THEME LOGIC ---
+        const themeBtn = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        const body = document.body;
+
+        function toggleTheme() {
+            body.classList.toggle('light-theme');
+            const isLight = body.classList.contains('light-theme');
+            themeIcon.className = isLight ? 'ph ph-moon' : 'ph ph-sun';
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+        }
+
+        // Initialize Theme
+        if (localStorage.getItem('theme') === 'light') {
+            toggleTheme();
+        }
+        themeBtn.addEventListener('click', toggleTheme);
+
+
+        // --- LANGUAGE LOGIC ---
+        const langBtn = document.getElementById('lang-toggle');
+        let currentLang = 'en';
+
+        function updateLanguage(lang) {
+            const texts = translations[lang];
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (texts[key]) {
+                    el.innerHTML = texts[key]; // innerHTML to preserve bold tags
+                }
+            });
+            langBtn.textContent = lang === 'en' ? 'EN' : 'PT';
+            currentLang = lang;
+        }
+
+        langBtn.addEventListener('click', () => {
+            const newLang = currentLang === 'en' ? 'pt' : 'en';
+            updateLanguage(newLang);
+        });
+
+
+        // --- GSAP ANIMATIONS ---
         gsap.registerPlugin(ScrollTrigger);
 
-        // Subtle parallax for titles
-        gsap.utils.toArray('h2').forEach(title => {
-            gsap.from(title, {
+        gsap.to("header h1", {
+            yPercent: 50,
+            ease: "none",
+            scrollTrigger: {
+                trigger: "header",
+                start: "top top",
+                end: "bottom top",
+                scrub: true
+            }, 
+        });
+
+        const cards = document.querySelectorAll('.project-card');
+        cards.forEach((card, i) => {
+            gsap.from(card, {
                 scrollTrigger: {
-                    trigger: title,
-                    start: "top 95%",
+                    trigger: card,
+                    start: "top 85%",
                 },
-                y: 30,
+                y: 50,
                 opacity: 0,
                 duration: 1,
-                ease: "power2.out"
+                delay: i * 0.1,
+                ease: "power3.out"
             });
         });
     </script>

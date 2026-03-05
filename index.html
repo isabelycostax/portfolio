@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Isabely Costa - Creative Strategist & AI Specialist. Blending pedagogy, design, and artificial intelligence.">
-    <title>Isabely Costa | Creative Director & Strategist</title>
+    <meta name="description" content="Isabely Costa — Creative strategist who applies Pedagogy and AI to build digital content that truly engages. Co-founder of Edutopia.AI. Strategy, design, and visual results.">
+    <title>Isabely Costa | Creative Strategist & AI Specialist</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -87,12 +87,14 @@
             transform: translateY(0);
         }
         
-        .project-card img, .project-card video {
+        .project-card .carousel-slide img, .project-card .carousel-slide video {
             transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            opacity: 0.8;
         }
-        
-        .project-card:hover img, .project-card:hover video {
+
+        .project-card:hover .carousel-slide img, .project-card:hover .carousel-slide video {
             transform: scale(1.05);
+            opacity: 1;
         }
 
         .marquee-track {
@@ -137,6 +139,90 @@
         }
         .nav-btn:hover {
             background-color: rgba(125,125,125,0.1);
+        }
+
+        /* Carousel */
+        .carousel-container {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+        }
+        .carousel-slide {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            transform: scale(1.04);
+            transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: none;
+        }
+        .carousel-slide.active {
+            opacity: 1;
+            transform: scale(1);
+            pointer-events: auto;
+        }
+        .carousel-slide.exiting {
+            opacity: 0;
+            transform: scale(0.97);
+        }
+        .carousel-slide img, .carousel-slide video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .carousel-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 20;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255,255,255,0.15);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.3s ease, background 0.2s ease;
+            font-size: 18px;
+        }
+        .carousel-arrow:hover {
+            background: rgba(42,92,255,0.7);
+        }
+        .project-card:hover .carousel-arrow {
+            opacity: 1;
+        }
+        .carousel-arrow.prev { left: 12px; }
+        .carousel-arrow.next { right: 12px; }
+
+        .carousel-dots {
+            position: absolute;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 20;
+            display: flex;
+            gap: 6px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .project-card:hover .carousel-dots {
+            opacity: 1;
+        }
+        .carousel-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.4);
+            transition: all 0.3s ease;
+        }
+        .carousel-dot.active {
+            background: white;
+            width: 18px;
+            border-radius: 3px;
         }
     </style>
 </head>
@@ -186,13 +272,13 @@
                 </div>
                 
                 <h1 class="font-display text-5xl md:text-8xl lg:text-9xl font-bold leading-[0.9] tracking-tighter mb-8">
-                    ATTENTION <br>
-                    <span class="text-textDim/40 italic font-light" data-i18n="hero.meets">ENGINEERING</span> <br>
-                    <span data-i18n="hero.intellect">& STRATEGY.</span>
+                    <span data-i18n="hero.line1">STRATEGY</span><span class="text-accent">.</span> <br>
+                    <span class="text-textDim/40 italic font-light" data-i18n="hero.meets">DESIGN</span><span class="text-accent">.</span> <br>
+                    <span data-i18n="hero.intellect">INTELLIGENCE.</span>
                 </h1>
-                
+
                 <p class="text-lg md:text-xl text-textDim max-w-2xl leading-relaxed" data-i18n="hero.bio">
-                    Architecting digital narratives where <strong>Cognitive Science</strong> guides <strong>Generative AI</strong> for maximum retention and conversion.
+                    Eu estudo como as pessoas aprendem — e uso isso pra criar conteúdo que funciona. Com passagens pela <strong>Fiocruz</strong>, gestão escolar e o mercado corporativo, hoje construo a <strong>Edutopia.AI</strong> e transformo estratégia em resultado visual.
                 </p>
             </div>
 
@@ -244,67 +330,91 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-[400px]">
                 
                 <!-- Project 1: Edutopia (Large) -->
-                <div class="project-card group relative lg:col-span-2 row-span-1 md:row-span-2 rounded-3xl overflow-hidden bg-surfaceLight border border-textDim/10 cursor-pointer">
-                    <video autoplay muted loop playsinline class="w-full h-full object-cover opacity-80 group-hover:opacity-100">
-                        <source src="assets/video-03.mp4" type="video/mp4">
-                    </video>
+                <div class="project-card group relative lg:col-span-2 row-span-1 md:row-span-2 rounded-3xl overflow-hidden bg-surfaceLight border border-textDim/10 cursor-pointer"
+                     data-assets='["assets/edutopia/video-03.mp4","assets/edutopia/video-04.mp4","assets/edutopia/edutopia.jpeg"]'>
+                    <div class="carousel-container">
+                        <div class="carousel-slide active">
+                            <video autoplay muted loop playsinline>
+                                <source src="assets/edutopia/video-03.mp4" type="video/mp4">
+                            </video>
+                        </div>
+                    </div>
+                    <button class="carousel-arrow prev"><i class="ph ph-caret-left"></i></button>
+                    <button class="carousel-arrow next"><i class="ph ph-caret-right"></i></button>
+                    <div class="carousel-dots"></div>
                     <div class="project-overlay absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent p-8 flex flex-col justify-end opacity-0 transition-all duration-500 translate-y-4">
                         <div class="flex gap-2 mb-3">
                             <span class="px-3 py-1 bg-accent text-white text-xs font-bold rounded-full uppercase">EdTech</span>
-                            <span class="px-3 py-1 bg-white/10 text-white text-xs font-bold rounded-full uppercase">AI Video</span>
+                            <span class="px-3 py-1 bg-white/10 text-white text-xs font-bold rounded-full uppercase">AI + Pedagogy</span>
+                            <span class="px-3 py-1 bg-white/10 text-white text-xs font-bold rounded-full uppercase">SaaS</span>
                         </div>
                         <h3 class="font-display text-3xl font-bold text-white">Edutopia.AI</h3>
-                        <p class="text-white/80 text-sm mt-2 max-w-md" data-i18n="project.edutopia.desc">Revolutionizing learning retention through AI-generated micro-content. Achieved 45% higher engagement rates.</p>
+                        <p class="text-white/80 text-sm mt-2 max-w-md" data-i18n="project.edutopia.desc">Platform that generates tests, exercises, crosswords, and word searches in 30 seconds with AI. Used by 847+ teachers across 200+ schools in Brazil. PDF/Word export with answer key included.</p>
+                        <a href="https://edutopia.online" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 mt-4 bg-accent hover:bg-accent/80 text-white px-5 py-2.5 rounded-full font-bold text-sm transition-all w-fit" onclick="event.stopPropagation()">
+                            <span data-i18n="project.edutopia.cta">Try it free</span> <i class="ph ph-arrow-up-right"></i>
+                        </a>
                     </div>
                 </div>
 
                 <!-- Project 2: Dadinha -->
-                <div class="project-card group relative rounded-3xl overflow-hidden bg-surfaceLight border border-textDim/10 cursor-pointer">
-                    <img src="assets/img-01.jpeg" alt="Dadinha Fashion" class="w-full h-full object-cover opacity-80 group-hover:opacity-100">
+                <div class="project-card group relative rounded-3xl overflow-hidden bg-surfaceLight border border-textDim/10 cursor-pointer"
+                     data-assets='["assets/dadinha/img-01.jpeg","assets/dadinha/dad.jpeg","assets/dadinha/dadinha.jpeg"]'>
+                    <div class="carousel-container">
+                        <div class="carousel-slide active">
+                            <img src="assets/dadinha/img-01.jpeg" alt="Dadinha Fashion">
+                        </div>
+                    </div>
+                    <button class="carousel-arrow prev"><i class="ph ph-caret-left"></i></button>
+                    <button class="carousel-arrow next"><i class="ph ph-caret-right"></i></button>
+                    <div class="carousel-dots"></div>
                     <div class="project-overlay absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent p-8 flex flex-col justify-end opacity-0 transition-all duration-500 translate-y-4">
                         <div class="flex gap-2 mb-3">
                             <span class="px-3 py-1 bg-white text-black text-xs font-bold rounded-full uppercase">Branding</span>
                         </div>
                         <h3 class="font-display text-2xl font-bold text-white">Dadinha Fashion</h3>
+                        <p class="text-white/80 text-sm mt-2 max-w-md" data-i18n="project.dadinha.desc">Complete visual identity for a fashion brand — from logo and color palette to social media templates and packaging.</p>
                     </div>
                 </div>
 
                 <!-- Project 3: Motion/Reels -->
-                <div class="project-card group relative rounded-3xl overflow-hidden bg-surfaceLight border border-textDim/10 cursor-pointer">
-                    <video autoplay muted loop playsinline class="w-full h-full object-cover opacity-80 group-hover:opacity-100">
-                        <source src="assets/video-01.mp4" type="video/mp4">
-                    </video>
+                <div class="project-card group relative rounded-3xl overflow-hidden bg-surfaceLight border border-textDim/10 cursor-pointer"
+                     data-assets='["assets/viral-reels/video-01.mp4","assets/viral-reels/style-company.mp4","assets/viral-reels/video-02.mp4","assets/viral-reels/WhatsApp Image 2026-03-05 at 00.56.46.jpeg"]'>
+                    <div class="carousel-container">
+                        <div class="carousel-slide active">
+                            <video autoplay muted loop playsinline>
+                                <source src="assets/viral-reels/video-01.mp4" type="video/mp4">
+                            </video>
+                        </div>
+                    </div>
+                    <button class="carousel-arrow prev"><i class="ph ph-caret-left"></i></button>
+                    <button class="carousel-arrow next"><i class="ph ph-caret-right"></i></button>
+                    <div class="carousel-dots"></div>
                     <div class="project-overlay absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent p-8 flex flex-col justify-end opacity-0 transition-all duration-500 translate-y-4">
                         <div class="flex gap-2 mb-3">
                             <span class="px-3 py-1 bg-accent text-white text-xs font-bold rounded-full uppercase">Social</span>
                         </div>
-                        <h3 class="font-display text-2xl font-bold text-white">Viral Reels</h3>
+                        <h3 class="font-display text-2xl font-bold text-white">Style Film</h3>
+                        <p class="text-white/80 text-sm mt-2 max-w-md" data-i18n="project.reels.desc">Video editing and content strategy for social media — built for retention in the first 3 seconds and organic reach.</p>
                     </div>
                 </div>
 
-                <!-- Project 4: Vanderson Nails -->
-                <div class="project-card group relative rounded-3xl overflow-hidden bg-surfaceLight border border-textDim/10 cursor-pointer">
-                    <img src="assets/img-02.jpeg" alt="Vanderson Nails" class="w-full h-full object-cover opacity-80 group-hover:opacity-100">
-                    <div class="project-overlay absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent p-8 flex flex-col justify-end opacity-0 transition-all duration-500 translate-y-4">
-                        <div class="flex gap-2 mb-3">
-                            <span class="px-3 py-1 bg-white text-black text-xs font-bold rounded-full uppercase">Identity</span>
+                <!-- Project 4: Advocacia LTDA -->
+                <div class="project-card group relative rounded-3xl overflow-hidden bg-surfaceLight border border-textDim/10 cursor-pointer"
+                     data-assets='["assets/advocacia-ltda/advocacia-1.jpeg","assets/advocacia-ltda/advocacia-2.jpeg","assets/advocacia-ltda/advocacia-3.jpeg","assets/advocacia-ltda/advocacia-4.jpeg"]'>
+                    <div class="carousel-container">
+                        <div class="carousel-slide active">
+                            <img src="assets/advocacia-ltda/advocacia-1.jpeg" alt="Advocacia LTDA">
                         </div>
-                        <h3 class="font-display text-2xl font-bold text-white">Vanderson Nails</h3>
                     </div>
-                </div>
-
-                <!-- Project 5: AI Motion -->
-                <div class="project-card group relative lg:col-span-2 rounded-3xl overflow-hidden bg-surfaceLight border border-textDim/10 cursor-pointer">
-                    <video autoplay muted loop playsinline class="w-full h-full object-cover opacity-80 group-hover:opacity-100">
-                        <source src="assets/video-05.mp4" type="video/mp4">
-                    </video>
+                    <button class="carousel-arrow prev"><i class="ph ph-caret-left"></i></button>
+                    <button class="carousel-arrow next"><i class="ph ph-caret-right"></i></button>
+                    <div class="carousel-dots"></div>
                     <div class="project-overlay absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent p-8 flex flex-col justify-end opacity-0 transition-all duration-500 translate-y-4">
                         <div class="flex gap-2 mb-3">
-                            <span class="px-3 py-1 bg-accent text-white text-xs font-bold rounded-full uppercase">Generative AI</span>
-                            <span class="px-3 py-1 bg-white/10 text-white text-xs font-bold rounded-full uppercase">Concept</span>
+                            <span class="px-3 py-1 bg-white text-black text-xs font-bold rounded-full uppercase">Branding</span>
                         </div>
-                        <h3 class="font-display text-3xl font-bold text-white">Future of Education</h3>
-                        <p class="text-white/80 text-sm mt-2 max-w-md" data-i18n="project.future.desc">Conceptual exploration of AI interfaces in classroom settings.</p>
+                        <h3 class="font-display text-2xl font-bold text-white">Social Media Advocacia</h3>
+                        <p class="text-white/80 text-sm mt-2 max-w-md" data-i18n="project.advocacia.desc">Institutional branding for a law firm — positioning authority and trust through clean design and consistent visual language.</p>
                     </div>
                 </div>
             </div>
@@ -318,7 +428,7 @@
                 <div>
                     <h2 class="font-display text-4xl md:text-5xl font-bold mb-8" data-i18n="method.title">My Methodology</h2>
                     <p class="text-lg text-textDim leading-relaxed mb-8" data-i18n="method.desc">
-                        Design is not ornamental; it is functional. I apply Educational Psychology principles to reduce cognitive load, ensuring messages are not just seen, but processed and retained.
+                        Before opening any tool, I think about who's going to see it. My background taught me to design with attention, retention, and cognitive load in mind. That changes everything: from a post layout to a video script.
                     </p>
                     <a href="#contact" class="text-accent font-bold border-b border-accent pb-1 inline-flex items-center gap-2">
                         <span data-i18n="cta.start">Start a Project</span> <i class="ph ph-arrow-right"></i>
@@ -331,7 +441,7 @@
                         </div>
                         <div>
                             <h3 class="font-display text-xl font-bold mb-2" data-i18n="service.cognitive">Cognitive Design</h3>
-                            <p class="text-textDim text-sm" data-i18n="service.cognitive.desc">Designing layouts and flows that reduce cognitive load and guide user attention naturally.</p>
+                            <p class="text-textDim text-sm" data-i18n="service.cognitive.desc">Layouts built from how the brain actually processes visuals — not just aesthetics, but hierarchy, rhythm, and focal points that guide attention where it matters.</p>
                         </div>
                     </div>
                     <div class="flex gap-6 group">
@@ -340,7 +450,7 @@
                         </div>
                         <div>
                             <h3 class="font-display text-xl font-bold mb-2" data-i18n="service.ai">AI-Driven Content</h3>
-                            <p class="text-textDim text-sm" data-i18n="service.ai.desc">Using Midjourney, Stable Diffusion, and LLMs to scale asset production while maintaining brand voice.</p>
+                            <p class="text-textDim text-sm" data-i18n="service.ai.desc">I use AI to accelerate production — generating drafts, visuals, and variations — then refine everything by hand. The AI speeds me up; the final quality is mine.</p>
                         </div>
                     </div>
                     <div class="flex gap-6 group">
@@ -349,7 +459,7 @@
                         </div>
                         <div>
                             <h3 class="font-display text-xl font-bold mb-2" data-i18n="service.growth">Growth Strategy</h3>
-                            <p class="text-textDim text-sm" data-i18n="service.growth.desc">Video editing and social strategy focused on retention metrics and algorithmic performance.</p>
+                            <p class="text-textDim text-sm" data-i18n="service.growth.desc">Content strategy that connects design to results — from video hooks that hold attention to posting rhythms that build real audience growth.</p>
                         </div>
                     </div>
                 </div>
@@ -370,7 +480,7 @@
                     <div class="absolute inset-4 bg-accent/20 rounded-full blur-3xl"></div>
                     <!-- Image Container: ensuring pure circle and clip -->
                     <div class="absolute inset-4 rounded-full overflow-hidden border-4 border-surface shadow-2xl">
-                        <img src="assets/img-isabely.jpg" alt="Isabely Costa" class="w-full h-full object-cover hover:scale-110 transition-transform duration-700">
+                        <img src="assets/profile/img-isabely.jpg" alt="Isabely Costa" class="w-full h-full object-cover hover:scale-110 transition-transform duration-700">
                     </div>
                     <!-- Badge -->
                     <div class="absolute bottom-10 -right-4 bg-accent text-white px-4 py-2 rounded-lg font-bold text-sm shadow-xl rotate-3">
@@ -383,20 +493,20 @@
                 <span class="text-accent font-mono uppercase tracking-widest text-sm mb-4 block" data-i18n="about.label">About Me</span>
                 <h2 class="font-display text-4xl md:text-5xl font-bold mb-6" data-i18n="about.title">From Classroom <br> to Algorithm.</h2>
                 <p class="text-textDim text-lg leading-relaxed mb-6" data-i18n="about.p1">
-                    My background in <strong>Pedagogy (UECE)</strong> is not a detour; it is the foundation of my strategy. 
+                    Minha formação é em <strong>Pedagogia pela UECE</strong>, e foi lá que aprendi o que realmente faz diferença: como as pessoas prestam atenção, o que faz uma informação grudar e por que a maioria do conteúdo é ignorada. Antes disso, já tinha coordenado um projeto educacional com a <strong>Fiocruz e o Governo do Ceará</strong> e passado pela gestão da Style Company.
                 </p>
                 <p class="text-textDim text-lg leading-relaxed mb-8" data-i18n="about.p2">
-                    Marketing is, essentially, high-speed education. I transpose <strong>andragogy and learning retention techniques</strong> to create digital assets that convert passive viewers into active users.
+                    Hoje sou co-fundadora da <strong>Edutopia.AI</strong>, onde junto inteligência artificial com pedagogia pra criar soluções que escalam. Cada projeto nesse portfólio segue a mesma lógica: entender como a pessoa vai processar aquilo — e criar em cima disso.
                 </p>
 
                 <div class="grid grid-cols-2 gap-4">
                     <div class="p-4 bg-surface border border-textDim/10 rounded-xl">
-                        <span class="block text-2xl font-display font-bold text-textMain mb-1">3+ Years</span>
-                        <span class="text-xs text-textDim uppercase" data-i18n="stats.exp">In Design & Video</span>
+                        <span class="block text-2xl font-display font-bold text-textMain mb-1">4+ Years</span>
+                        <span class="text-xs text-textDim uppercase" data-i18n="stats.exp">In Strategy & Operations</span>
                     </div>
                     <div class="p-4 bg-surface border border-textDim/10 rounded-xl">
-                        <span class="block text-2xl font-display font-bold text-textMain mb-1">Top 10%</span>
-                        <span class="text-xs text-textDim uppercase" data-i18n="stats.prompt">AI Prompt Engineering</span>
+                        <span class="block text-2xl font-display font-bold text-textMain mb-1">Co-founder</span>
+                        <span class="text-xs text-textDim uppercase" data-i18n="stats.prompt">Edutopia.AI</span>
                     </div>
                 </div>
             </div>
@@ -424,7 +534,7 @@
             </div>
 
             <p class="text-xs text-textDim uppercase tracking-[0.2em]">
-                &copy; 2026 Isabely Costa Portfolio. <br> Crafted with Intelligence.
+                &copy; 2026 Isabely Costa.
             </p>
         </div>
     </footer>
@@ -438,29 +548,33 @@
                 "nav.about": "About",
                 "nav.contact": "Let's Talk",
                 "hero.status": "Available for new projects",
-                "hero.meets": "ENGINEERING",
-                "hero.intellect": "& STRATEGY.",
-                "hero.bio": "Architecting digital narratives where <strong>Cognitive Science</strong> guides <strong>Generative AI</strong> for maximum retention and conversion.",
+                "hero.line1": "STRATEGY",
+                "hero.meets": "DESIGN",
+                "hero.intellect": "INTELLIGENCE.",
+                "hero.bio": "I study how people learn — and use that to create content that works. With experience at <strong>Fiocruz</strong>, school management, and the corporate world, I'm now building <strong>Edutopia.AI</strong> and turning strategy into visual results.",
                 "work.title1": "Selected",
                 "work.title2": "Work",
                 "work.subtitle": "Curated selection of commercial projects",
-                "project.edutopia.desc": "Revolutionizing learning retention through AI-generated micro-content. Achieved 45% higher engagement rates.",
-                "project.future.desc": "Conceptual exploration of AI interfaces in classroom settings.",
+                "project.edutopia.desc": "Platform that generates tests, exercises, crosswords, and word searches in 30 seconds with AI. Used by 847+ teachers across 200+ schools in Brazil. PDF/Word export with answer key included.",
+                "project.edutopia.cta": "Try it free",
+                "project.dadinha.desc": "Complete visual identity for a fashion brand — from logo and color palette to social media templates and packaging.",
+                "project.reels.desc": "Video editing and content strategy for social media — built for retention in the first 3 seconds and organic reach.",
+                "project.advocacia.desc": "Institutional branding for a law firm — positioning authority and trust through clean design and consistent visual language.",
                 "method.title": "My Methodology",
-                "method.desc": "Design is not ornamental; it is functional. I apply Educational Psychology principles to reduce cognitive load, ensuring messages are not just seen, but processed and retained.",
+                "method.desc": "Before opening any tool, I think about who's going to see it. My background taught me to design with attention, retention, and cognitive load in mind. That changes everything: from a post layout to a video script.",
                 "cta.start": "Start a Project",
                 "service.cognitive": "Cognitive Design",
-                "service.cognitive.desc": "Designing layouts and flows that reduce cognitive load and guide user attention naturally.",
+                "service.cognitive.desc": "Layouts built from how the brain actually processes visuals — not just aesthetics, but hierarchy, rhythm, and focal points that guide attention where it matters.",
                 "service.ai": "AI-Driven Content",
-                "service.ai.desc": "Using Midjourney, Stable Diffusion, and LLMs to scale asset production while maintaining brand voice.",
+                "service.ai.desc": "I use AI to accelerate production — generating drafts, visuals, and variations — then refine everything by hand. The AI speeds me up; the final quality is mine.",
                 "service.growth": "Growth Strategy",
-                "service.growth.desc": "Video editing and social strategy focused on retention metrics and algorithmic performance.",
+                "service.growth.desc": "Content strategy that connects design to results — from video hooks that hold attention to posting rhythms that build real audience growth.",
                 "about.label": "About Me",
                 "about.title": "From Classroom <br> to Algorithm.",
-                "about.p1": "My background in <strong>Pedagogy (UECE)</strong> is not a detour; it is the foundation of my strategy.",
-                "about.p2": "Marketing is, essentially, high-speed education. I transpose <strong>andragogy and learning retention techniques</strong> to create digital assets that convert passive viewers into active users.",
-                "stats.exp": "In Design & Video",
-                "stats.prompt": "AI Prompt Engineering",
+                "about.p1": "I'm trained in <strong>Pedagogy at UECE</strong>, and that's where I learned what actually matters: how people pay attention, what makes information stick, and why most content gets ignored. Before that, I coordinated an educational project with <strong>Fiocruz and the State of Ceará</strong> and worked in management at Style Company.",
+                "about.p2": "Today I'm co-founding <strong>Edutopia.AI</strong>, where I combine artificial intelligence with pedagogy to build solutions that scale. Every project in this portfolio follows the same principle: understand how the viewer will process it — and build from there.",
+                "stats.exp": "In Strategy & Operations",
+                "stats.prompt": "Edutopia.AI",
                 "footer.ready": "READY TO"
             },
             pt: {
@@ -469,29 +583,33 @@
                 "nav.about": "Sobre",
                 "nav.contact": "Vamos Conversar",
                 "hero.status": "Disponível para projetos",
-                "hero.meets": "ENGENHARIA",
-                "hero.intellect": "& ESTRATÉGIA.",
-                "hero.bio": "Arquitetando narrativas digitais onde a <strong>Ciência Cognitiva</strong> guia a <strong>IA Generativa</strong> para máxima retenção e conversão.",
+                "hero.line1": "ESTRATÉGIA",
+                "hero.meets": "DESIGN",
+                "hero.intellect": "INTELIGÊNCIA.",
+                "hero.bio": "Eu estudo como as pessoas aprendem — e uso isso pra criar conteúdo que funciona. Com passagens pela <strong>Fiocruz</strong>, gestão escolar e o mercado corporativo, hoje construo a <strong>Edutopia.AI</strong> e transformo estratégia em resultado visual.",
                 "work.title1": "Trabalhos",
                 "work.title2": "Selecionados",
                 "work.subtitle": "Seleção curada de projetos comerciais",
-                "project.edutopia.desc": "Revolucionando a retenção de aprendizado através de micro-conteúdos gerados por IA. Alcançou taxas de engajamento 45% maiores.",
-                "project.future.desc": "Exploração conceitual de interfaces de IA em ambientes de sala de aula.",
+                "project.edutopia.desc": "Plataforma que gera provas, exercícios, cruzadinhas e caça-palavras em 30 segundos com IA. Usada por 847+ professores em 200+ escolas no Brasil. Exporta em PDF/Word com gabarito incluso.",
+                "project.edutopia.cta": "Experimente grátis",
+                "project.dadinha.desc": "Identidade visual completa para Salão de Beleza — do logo e paleta de cores aos templates de redes sociais e embalagens.",
+                "project.reels.desc": "Edição de vídeo e estratégia de conteúdo para redes sociais — feitos para reter nos primeiros 3 segundos e alcançar organicamente.",
+                "project.advocacia.desc": "Branding institucional para escritório de advocacia — posicionando autoridade e confiança com design limpo e linguagem visual consistente.",
                 "method.title": "Minha Metodologia",
-                "method.desc": "O design não é ornamental; é funcional. Aplico princípios de Psicologia Educacional para reduzir a carga cognitiva, garantindo que a mensagem não seja apenas vista, mas processada e retida.",
+                "method.desc": "Antes de abrir qualquer ferramenta, eu penso em quem vai ver aquilo. Minha formação me ensinou a projetar pensando em atenção, retenção e carga cognitiva. Isso muda tudo: do layout de um post ao roteiro de um vídeo.",
                 "cta.start": "Iniciar Projeto",
                 "service.cognitive": "Design Cognitivo",
-                "service.cognitive.desc": "Projetando layouts e fluxos que reduzem a carga cognitiva e guiam a atenção do usuário naturalmente.",
+                "service.cognitive.desc": "Layouts construídos a partir de como o cérebro processa informação visual — não só estética, mas hierarquia, ritmo e pontos focais que direcionam a atenção para onde importa.",
                 "service.ai": "Conteúdo via IA",
-                "service.ai.desc": "Usando Midjourney, Stable Diffusion e LLMs para escalar a produção de assets mantendo a voz da marca.",
-                "service.growth": "Estratégia de Growth",
-                "service.growth.desc": "Edição de vídeo e estratégia social focadas em métricas de retenção e performance algorítmica.",
+                "service.ai.desc": "Uso IA para acelerar a produção — gerando rascunhos, visuais e variações — e depois refino tudo à mão. A IA me acelera; a qualidade final é minha.",
+                "service.growth": "Estratégia de Crescimento",
+                "service.growth.desc": "Estratégia de conteúdo que conecta design a resultado — de ganchos em vídeo que prendem a atenção a ritmos de postagem que constroem crescimento real de audiência.",
                 "about.label": "Sobre Mim",
                 "about.title": "Da Sala de Aula <br> ao Algoritmo.",
-                "about.p1": "Minha formação em <strong>Pedagogia (UECE)</strong> não é um desvio; é o alicerce da minha estratégia.",
-                "about.p2": "Marketing é, em essência, ensino em alta velocidade. Transponho <strong>técnicas de andragogia e retenção</strong> para criar ativos digitais que convertem espectadores passivos em usuários ativos.",
-                "stats.exp": "Em Design e Vídeo",
-                "stats.prompt": "Engenharia de Prompt IA",
+                "about.p1": "Minha formação é em <strong>Pedagogia pela UECE</strong>, e foi lá que aprendi o que realmente faz diferença: como as pessoas prestam atenção, o que faz uma informação grudar e por que a maioria do conteúdo é ignorada. Antes disso, já tinha coordenado um projeto educacional com a <strong>Fiocruz e o Governo do Ceará</strong> e passado pela gestão da Style Company.",
+                "about.p2": "Hoje sou co-fundadora da <strong>Edutopia.AI</strong>, onde junto inteligência artificial com pedagogia pra criar soluções que escalam. Cada projeto nesse portfólio segue a mesma lógica: entender como a pessoa vai processar aquilo — e criar em cima disso.",
+                "stats.exp": "Em Estratégia e Operações",
+                "stats.prompt": "Edutopia.AI",
                 "footer.ready": "PRONTO PARA"
             }
         };
@@ -563,6 +681,117 @@
                 duration: 1,
                 delay: i * 0.1,
                 ease: "power3.out"
+            });
+        });
+
+
+        // --- CAROUSEL LOGIC ---
+        document.querySelectorAll('.project-card[data-assets]').forEach(card => {
+            const assets = JSON.parse(card.dataset.assets);
+            const container = card.querySelector('.carousel-container');
+            const dotsContainer = card.querySelector('.carousel-dots');
+            let currentIndex = 0;
+            let isTransitioning = false;
+
+            function isVideo(src) {
+                return /\.(mp4|webm|mov)$/i.test(src);
+            }
+
+            // Pre-build all slides upfront (so videos are ready)
+            const slides = [];
+            const existingSlide = container.querySelector('.carousel-slide');
+            if (existingSlide) {
+                slides.push(existingSlide);
+            }
+
+            for (let i = slides.length; i < assets.length; i++) {
+                const slide = document.createElement('div');
+                slide.className = 'carousel-slide';
+                if (isVideo(assets[i])) {
+                    const video = document.createElement('video');
+                    video.muted = true;
+                    video.loop = true;
+                    video.playsInline = true;
+                    video.preload = 'auto';
+                    const source = document.createElement('source');
+                    source.src = assets[i];
+                    source.type = 'video/mp4';
+                    video.appendChild(source);
+                    slide.appendChild(video);
+                } else {
+                    const img = document.createElement('img');
+                    img.src = assets[i];
+                    img.alt = '';
+                    slide.appendChild(img);
+                }
+                container.appendChild(slide);
+                slides.push(slide);
+            }
+
+            // Autoplay the first video
+            const firstVid = slides[0]?.querySelector('video');
+            if (firstVid) firstVid.play();
+
+            // Build dots
+            assets.forEach((_, i) => {
+                const dot = document.createElement('span');
+                dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+                dot.addEventListener('click', (e) => { e.stopPropagation(); goTo(i); });
+                dotsContainer.appendChild(dot);
+            });
+
+            // Hide arrows/dots if only 1 asset
+            if (assets.length <= 1) {
+                card.querySelectorAll('.carousel-arrow').forEach(a => a.style.display = 'none');
+                dotsContainer.style.display = 'none';
+            }
+
+            function goTo(index) {
+                if (assets.length <= 1 || index === currentIndex || isTransitioning) return;
+                isTransitioning = true;
+
+                const oldSlide = slides[currentIndex];
+                const newSlide = slides[index];
+                const dots = dotsContainer.querySelectorAll('.carousel-dot');
+
+                // Exit animation on old slide
+                oldSlide.classList.remove('active');
+                oldSlide.classList.add('exiting');
+                const oldVid = oldSlide.querySelector('video');
+                if (oldVid) {
+                    oldVid.pause();
+                    oldVid.currentTime = 0;
+                }
+
+                // Enter animation on new slide
+                newSlide.classList.add('active');
+                const newVid = newSlide.querySelector('video');
+                if (newVid) {
+                    newVid.currentTime = 0;
+                    newVid.play().catch(() => {});
+                }
+
+                // Update dots
+                dots.forEach(d => d.classList.remove('active'));
+                dots[index]?.classList.add('active');
+
+                // Cleanup after transition
+                setTimeout(() => {
+                    oldSlide.classList.remove('exiting');
+                    isTransitioning = false;
+                }, 600);
+
+                currentIndex = index;
+            }
+
+            card.querySelector('.carousel-arrow.prev').addEventListener('click', (e) => {
+                e.stopPropagation();
+                goTo((currentIndex - 1 + assets.length) % assets.length);
+            });
+
+            card.querySelector('.carousel-arrow.next').addEventListener('click', (e) => {
+                e.stopPropagation();
+                goTo((currentIndex + 1) % assets.length);
             });
         });
     </script>

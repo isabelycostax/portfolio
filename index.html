@@ -585,6 +585,7 @@
         <svg width="32" height="32" viewBox="0 0 24 24" fill="white" stroke="rgba(0,0,0,0.6)" stroke-width="1.5">
             <path d="M5 3l14 8-6 2-4 6z"/>
         </svg>
+        <div class="click-ripple" id="click-ripple"></div>
     </div>
 
     <script>
@@ -901,20 +902,33 @@
                                 duration: 1.4,
                                 ease: "power3.inOut"
                             })
-                            // 3. Click effect down
+                            // 3. Click press down
                             .to(fakeCursor, {
-                                scale: 0.8,
-                                duration: 0.1,
-                                ease: "power2.in",
-                                onComplete: () => {
-                                    if (!cancelled) firstCard.classList.add('fake-hover');
+                                scale: 0.65,
+                                duration: 0.12,
+                                ease: "power3.in"
+                            })
+                            // 4. Click release + ripple burst
+                            .to(fakeCursor, {
+                                scale: 1.1,
+                                duration: 0.2,
+                                ease: "back.out(3)",
+                                onStart: () => {
+                                    if (cancelled) return;
+                                    firstCard.classList.add('fake-hover');
+                                    // Ripple burst
+                                    const ripple = document.getElementById('click-ripple');
+                                    gsap.fromTo(ripple,
+                                        { scale: 0, opacity: 1 },
+                                        { scale: 8, opacity: 0, duration: 0.6, ease: "power2.out" }
+                                    );
                                 }
                             })
-                            // 4. Click effect up
+                            // 5. Settle back to normal scale
                             .to(fakeCursor, {
                                 scale: 1,
-                                duration: 0.15,
-                                ease: "back.out(2)"
+                                duration: 0.2,
+                                ease: "power2.out"
                             })
                             // 5. Hold for reading
                             .to({}, { duration: 3 })

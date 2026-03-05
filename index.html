@@ -224,6 +224,47 @@
             width: 18px;
             border-radius: 3px;
         }
+
+        /* Fake cursor */
+        .fake-cursor {
+            position: fixed;
+            left: 0;
+            top: 0;
+            z-index: 99999;
+            pointer-events: none;
+            opacity: 0;
+            filter: drop-shadow(0 2px 6px rgba(0,0,0,0.5));
+            will-change: transform, opacity;
+        }
+
+        .fake-cursor .click-ripple {
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.7);
+            transform: scale(0);
+            pointer-events: none;
+        }
+
+        /* Fake hover state (mirrors real :hover) */
+        .project-card.fake-hover .project-overlay {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .project-card.fake-hover .carousel-arrow {
+            opacity: 1;
+        }
+        .project-card.fake-hover .carousel-dots {
+            opacity: 1;
+        }
+        .project-card.fake-hover .carousel-slide img,
+        .project-card.fake-hover .carousel-slide video {
+            transform: scale(1.05);
+            opacity: 1;
+        }
     </style>
 </head>
 <body class="antialiased selection:bg-accent selection:text-white">
@@ -539,6 +580,13 @@
         </div>
     </footer>
 
+    <!-- Fake Cursor -->
+    <div id="fake-cursor" class="fake-cursor">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="white" stroke="rgba(0,0,0,0.6)" stroke-width="1.5">
+            <path d="M5 3l14 8-6 2-4 6z"/>
+        </svg>
+    </div>
+
     <script>
         // --- TRANSLATIONS CONFIGURATION ---
         const translations = {
@@ -794,6 +842,97 @@
                 goTo((currentIndex + 1) % assets.length);
             });
         });
+
+
+        // --- FAKE CURSOR ANIMATION ---
+        (function() {
+            if (sessionStorage.getItem('fakeCursorDone')) return;
+
+            const fakeCursor = document.getElementById('fake-cursor');
+            const firstCard = document.querySelector('.project-card');
+            if (!fakeCursor || !firstCard) return;
+
+            let cancelled = false;
+            let triggered = false;
+
+            function cleanup() {
+                if (cancelled) return;
+                cancelled = true;
+                gsap.killTweensOf(fakeCursor);
+                gsap.to(fakeCursor, { opacity: 0, duration: 0.3 });
+                firstCard.classList.remove('fake-hover');
+                sessionStorage.setItem('fakeCursorDone', '1');
+            }
+
+            // Trigger when the first card scrolls into view
+            ScrollTrigger.create({
+                trigger: firstCard,
+                start: "top 80%",
+                once: true,
+                onEnter: () => {
+                    if (cancelled || triggered) return;
+                    triggered = true;
+
+                    // Wait for card entrance animation to finish
+                    setTimeout(() => {
+                        if (cancelled) return;
+
+                        const rect = firstCard.getBoundingClientRect();
+                        const startX = rect.right - 80;
+                        const startY = rect.top - 60;
+                        const endX = rect.left + rect.width * 0.35;
+                        const endY = rect.top + rect.height * 0.55;
+
+                        // Position cursor at start
+                        gsap.set(fakeCursor, { x: startX, y: startY, scale: 1 });
+
+                        // Sequential animation
+                        gsap.timeline()
+                            // 1. Fade in
+                            .to(fakeCursor, {
+                                opacity: 1,
+                                duration: 0.5,
+                                ease: "power2.out"
+                            })
+                            // 2. Move to card center
+                            .to(fakeCursor, {
+                                x: endX,
+                                y: endY,
+                                duration: 1.4,
+                                ease: "power3.inOut"
+                            })
+                            // 3. Click effect down
+                            .to(fakeCursor, {
+                                scale: 0.8,
+                                duration: 0.1,
+                                ease: "power2.in",
+                                onComplete: () => {
+                                    if (!cancelled) firstCard.classList.add('fake-hover');
+                                }
+                            })
+                            // 4. Click effect up
+                            .to(fakeCursor, {
+                                scale: 1,
+                                duration: 0.15,
+                                ease: "back.out(2)"
+                            })
+                            // 5. Hold for reading
+                            .to({}, { duration: 3 })
+                            // 6. Fade out
+                            .to(fakeCursor, {
+                                opacity: 0,
+                                duration: 0.5,
+                                ease: "power2.in",
+                                onStart: () => firstCard.classList.remove('fake-hover'),
+                                onComplete: () => {
+                                    cancelled = true;
+                                    sessionStorage.setItem('fakeCursorDone', '1');
+                                }
+                            });
+                    }, 1200);
+                }
+            });
+        })();
     </script>
 </body>
 </html>
